@@ -2,6 +2,40 @@
 <html lang="en">
 <% include header %>
 <style>
+	#imageInfoLeft {
+		text-align: left;
+		margin: 0px;
+		padding: 0px;
+		float: left;
+		vertical-align:top;
+	}
+	#imageInfoRight {
+		text-align: right;
+		margin: 0px;
+		padding: 0px;
+		float: right;
+		vertical-align:top;
+	}	
+	#imageOwner {
+		text-align: right;
+		margin: 1px;
+		padding: 1px;
+	}
+	#imagePlace {
+		text-align: right;
+		margin: 1px;
+		padding: 1px;	
+	}
+	#imageInfoBottom {
+		clear: both;
+		text-align: left;
+		padding-top: 5px;
+	}
+	#imageDate {
+		text-align: right;
+		margin: 1px;
+		padding: 1px;
+	}				
 </style>
 <body>
 	<% include navbar %>
@@ -29,7 +63,7 @@
 	</div>
 
 	<div class="container">
-		<!-- Modal -->
+		<!-- Upload Modal -->
 		<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div id="modalBox" class="modal-content">
@@ -52,22 +86,66 @@
 		</div>
 	</div>
 
+	<div class="container">
+		<!-- Image Modal -->
+		<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-center">
+				<div class="modal-content">
+			    	<div class="modal-body">
+			    		<div id="imageView"></div>
+			    	</div>
+			    	<div class="modal-footer">
+				    	<div id="imageInfoLeft">
+							<h3 id="imageSubject"></h3>
+						</div>
+						<div id="imageInfoRight">
+							<h5 id="imageOwner"></h5>
+							<h5 id="imagePlace"></h5>
+							<h6 id="imageDate"></h6>
+						</div>
+						<div id="imageInfoBottom">
+							<p id="imageDesc"></p>
+						</div>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+	</div>	
+
 	<hr>
 		<% include footer %>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#gallery').addClass("active");
-		});
-	</script>
-
 	<script>
 		var thumbnail_holders = "";
-		for (i = 0; i < 10; ++i) {
-			thumbnail_holders = thumbnail_holders + '<div class=\'col-sm-4 col-xs-6 col-md-3 col-lg-3\'><a class="thumbnail fancybox" rel="ligthbox" href="http://placehold.it/300x320.png"><img class="img-responsive" alt="" src="http://placehold.it/320x320" /></a></div>'
+		for (i = 0; i < 12; ++i) {
+			thumbnail_holders = thumbnail_holders + '<div id="thumbnail_' + i +  '" class=\'col-sm-4 col-xs-6 col-md-3 col-lg-3\'><a class="thumbnail fancybox" href="http://placehold.it/300x320.png"><img class="img-responsive" alt="" src="http://placehold.it/320x320" /></a></div>'
 		}
 			
 		$('#gal').append(thumbnail_holders);
+
+		for (i = 0; i < 12; ++i) {
+			var thumbnail = document.getElementById("thumbnail_" + i);
+    		thumbnail.addEventListener("click", function (e) {
+        		e.preventDefault();
+				
+				// Set image details
+				$('#imageSubject').text('Subject');
+				$('#imagePlace').text('Place');
+				$('#imageDate').text('Date');
+				$('#imageOwner').text('Owner');
+				$('#imageDesc').text('This is a description of the image. Some super long description for testing until I actually get the database hooked up. Hopefully it will look okay. Image is also obviously just a test image.');
+
+				// Set Image
+				$('#imageView').html('<img id="modalImage" src="//distilleryimage2.ak.instagram.com/e3493b0a045411e3a4fb22000a1f97ec_7.jpg">');
+
+				// Resize modal based on image
+				var imgWidth = document.getElementById("modalImage").naturalWidth;
+    			$('#imageModal').find('.modal-dialog').css({width:imgWidth+45});
+
+				// Show the modal
+				$('#imageModal').modal('show');
+    		});
+		}
 	</script>
 
 </body>
