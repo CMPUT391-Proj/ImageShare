@@ -1,174 +1,158 @@
+<style>
+    #text_input {
+      width: 100%;
+      height: 100%;
+      max-width: 500px;
+      min-height: 200px;
+    }
+    .block { 
+      margin:30px
+    }
+    .highlightOver { 
+      background:#eee;
+    }
+    .row {
+      margin:10px
+    }
+    #fileHolder{
+      border: 6px dashed #bbb;
+      text-align: center;
+      color: #bbb;
+      font-size: 20px;
+      width: 480px; 
+      line-height: 200px;
+      height: 200px; 
+    }
+    ul {
+      list-style-type:bullet;
+    }
+    label.control-label span { 
+      cursor: pointer; 
+    }
+  .date-picker{z-index:1151 !important;}
+</style>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/smoothness/jquery-ui.css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-      <script src="/js/bootstrap.min.js" type="text/javascript"></script>
-    <style>
-      #text_input {
-        width: 100%;
-        height: 100%;
-        max-width: 500px;
-        min-height: 200px;
-      }
-      .container { 
-        margin:20px
-      }
-      .highlightOver { 
-        background:#eee;
-      }
-      .row {
-        margin:10px
-      }
-      #fileHolder{
-        border: 6px dashed #bbb;
-        text-align: center;
-        color: #bbb;
-        font-size: 20px;
-        width: 480px; 
-        line-height: 200px;
-        height: 200px; 
-      }
-      ul {
-        list-style-type:bullet;
-      }
-      label.control-label span { 
-        cursor: pointer; 
-      }
-      .date-picker{z-index:1151 !important;}
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <!--div class="page-header">
-          <h1>Image Upload</h1>
-      </div-->
-       
-        <div class="row">
-          <div id="fileHolder">Drop your files or folders here</div>
-        </div>
+<div class="block">
+    <div class="row">
+        <div id="fileHolder">Drop your files or folders here</div>
+    </div>
       
-        <div class="row"></div>
+    <div class="row"></div>
 
-        <div id="text_input">
-          <div class="row">
+    <div id="text_input">
+        <div class="row">
             <div class="input-group input-group-lg">
-              <span class="input-group-addon">Description</span>
-              <input type="text" class="form-control" placeholder="">
+                <span class="input-group-addon">Description</span>
+                <input type="text" class="form-control" placeholder="">
             </div>
-          </div>
-
-          <div class="row">
+        </div>
+    
+        <div class="row">
             <div class="input-group">
-              <span class="input-group-addon">Location</span>
-              <input type="text" class="form-control" placeholder="Where were these image(s) taken?">
+                <span class="input-group-addon">Location</span>
+                <input type="text" class="form-control" placeholder="Where were these image(s) taken?">
             </div>
-          </div>
+        </div>
 
-          <div class="row">
+        <div class="row">
             <div class="input-group">
-              <span class="input-group-addon">Subject</span>
-              <input type="text" class="form-control" placeholder="Who / what are in these photo(s)?">
+                <span class="input-group-addon">Subject</span>
+                <input type="text" class="form-control" placeholder="Who / what are in these photo(s)?">
             </div>
-          </div>
+        </div>
 
-          <div class="row">
+        <div class="row">
             <div class="date-form">
                 <div class="control-group">
                     <div class="controls">
                         <div class="input-group">
-                            <label for="date-picker" class="input-group-addon btn"><span>Date</span>
-
+                            <label for="date-picker" class="input-group-addon btn">
+                              <span>Date</span>
                             </label>
                             <input id="date-picker" type="text" class="date-picker form-control" placeholder="When were these photo(s) taken?"/>
                         </div>
                     </div>
                 </div>
-          </div>   
-
-          <div class="row">
-            <h4>Files to upload:</h4>
-            <ul id="fileOutput"></ul>
-          </div>
-     
+            </div>   
         </div>
 
-    <script>
-          $(".date-picker").datepicker();
+        <div class="row">
+            <h4>Files to upload:</h4>
+            <ul id="fileOutput"></ul>
+        </div>
 
-          $(".date-picker").on("change", function () {
-              var id = $(this).attr("id");
-              var val = $("label[for='" + id + "']").text();
-              $("#msg").text(val + " changed");
-          });
-    </script>
+    </div>
+</div>
 
-    <script type="text/javascript">
-      /* TODO:
-          - use date picker
+<script>
+    $(".date-picker").datepicker();
+
+    $(".date-picker").on("change", function () {
+        var id = $(this).attr("id");
+        var val = $("label[for='" + id + "']").text();
+        $("#msg").text(val + " changed");
+    });
+</script>
+
+<script type="text/javascript">
+    /* TODO:
           - read in groups from DB and generate UI bullets
           - store each image in image database
-      */
+    */
 
+    var files, 
+        file, 
+        extension, 
+        output = document.getElementById("fileOutput"),
+        dropzone = document.getElementById("fileHolder");
 
-      var files, 
-          file, 
-          extension, 
-          output = document.getElementById("fileOutput"),
-          dropzone = document.getElementById("fileHolder");
+    dropzone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropzone.classList.add("highlightOver");
+    });
 
-      dropzone.addEventListener("dragover", function (e) {
-          e.preventDefault();
-          dropzone.classList.add("highlightOver");
-      });
+    dropzone.addEventListener("dragleave", function (e) {
+        dropzone.classList.remove("highlightOver");
+    });
 
-      dropzone.addEventListener("dragleave", function (e) {
-          dropzone.classList.remove("highlightOver");
-      });
+    dropzone.addEventListener("dragend", function (e) {
+        dropzone.classList.remove("highlightOver");
+    });
 
-      dropzone.addEventListener("dragend", function (e) {
-          dropzone.classList.remove("highlightOver");
-      });
-
-      dropzone.ondrop = function(e) {
-          e.preventDefault();
-          dropzone.classList.remove("highlightOver");
+    dropzone.ondrop = function(e) {
+        e.preventDefault();
+        dropzone.classList.remove("highlightOver");
           
-          files = [];
-          output.innerHTML = "";
+        files = [];
+        output.innerHTML = "";
 
-          for (var i = 0, len = e.dataTransfer.items.length; i < len; i++) {
-              var entry = e.dataTransfer.items[i].webkitGetAsEntry();
-              readDir(entry, files);
-          }
-      };
+        for (var i = 0, len = e.dataTransfer.items.length; i < len; i++) {
+            var entry = e.dataTransfer.items[i].webkitGetAsEntry();
+            readDir(entry, files);
+        }
+    };
 
-      function readDir(entry, files) {
-          if (entry.isFile) {
+    function readDir(entry, files) {
+        if (entry.isFile) {
             readFile(entry, files);
-          } else if (entry.isDirectory) {
+        } else if (entry.isDirectory) {
             var dirReader = entry.createReader();
             dirReader.readEntries(function(entries) {
-              for (var i = 0; i < entries.length; ++i) {
-                readDir(entries[i], files);
-              } 
+                for (var i = 0; i < entries.length; ++i) {
+                  readDir(entries[i], files);
+                } 
             });
-          }
-      }
+        }
+    }
 
-      function readFile(file, files) {
+    function readFile(file, files) {
         console.log(file.size);
         extension = file.name.split(".").pop();
         if (extension == 'jpg' || extension == 'gif') {
-          files.push(file);
-          output.innerHTML += "<li class='type-" + extension + "'>" + file.name + "</li>";
+            files.push(file);
+            output.innerHTML += "<li class='type-" + extension + "'>" + file.name + "</li>";
         }        
-      }
+    }
 
-    </script>
-  </body>
-</html>
+</script>
+
