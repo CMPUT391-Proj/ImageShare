@@ -1,34 +1,7 @@
-if (process.platform == 'linux') {
-	var oracle = require('oracle');
-}
-else if (process.platform == 'darwin') {
-	var oracle = require('oracle_mac');
-}
-
 var express = require('express');
 var bodyParser = require('body-parser');
+var oracleHandler = require('utils');
 var router = express.Router();
-
-var connectData = {
-    hostname: "localhost",
-    port: 1525,
-    database: "crs", // System ID (SID)
-    user: "tfung",
-    password: "pass2014"
-};
-
-function oracleQuery(statement) {
-	oracle.connect(connectData, function(err, connection) {
-	if (err) { console.log('Error connecting to db:', err); return; }
-
-		connection.execute(statement, [], function(err, results) {
-			if (err) { console.log('Error executing query:', err); return; }
-
-			console.log(results);
-			connection.close(); // call only when query is finished executing
-		});
-	});
-}
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -53,8 +26,8 @@ router.post('/register', function(req, res) {
 		'INSERT INTO PERSONS (USER_NAME, FIRST_NAME, LAST_NAME, ADDRESS, EMAIL, PHONE) '+
 		'VALUES (\''+username+'\',\''+firstname+'\',\''+lastname+'\',\''+address+'\',\''+email+'\',\''+phone+'\')';
 
-	oracleQuery(insertUsersStatement);
-	oracleQuery(insertPersonsStatement);
+	oracleHandler.oracleQuery(insertUsersStatement);
+	oracleHandler.oracleQuery(insertPersonsStatement);
 });
 
 module.exports = router;
