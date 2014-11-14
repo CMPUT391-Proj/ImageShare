@@ -1,5 +1,5 @@
 var express = require('express');
-var oracleHandler = require('utils');
+var oracleHandler = require('oracle-handler');
 var router = express.Router();
 
 /* GET home page. */
