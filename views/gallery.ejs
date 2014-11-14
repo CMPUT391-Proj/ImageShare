@@ -44,24 +44,33 @@
 		<div class="container">
 			<h1>Gallery</h1>
 			<p>View your favourite moments here ... </p>
+				<div class="container">
+			<!-- Button trigger modal -->
+			<div class="row" align="center">
+				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadModal" data-backdrop="static">
+					  Upload Images
+				</button>
+			</div>
+	</div>
+
 		</div>
 	</div>
 
 	<div class="container">
 		<div class="row">
-			<div id="gal" class='list-group gallery'></div> <!-- list-group / end -->
-		</div> <!-- row / end -->
-	</div> <!-- container / end -->
-		
-	<div class="container">
-		<!-- Button trigger modal -->
-		<div class="row" align="center">
-			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#uploadModal" data-backdrop="static">
-				  Upload Images
-			</button>
+			<h1>Most Popular Images</h1>
+		</div>
+		<div class="row">
+			<div id="popular" class='list-group gallery'></div>
+		</div>
+		<div class="row">
+			<h1>All Images</h1>
+		</div>
+		<div class="row">
+			<div id="gal" class='list-group gallery'></div> 
 		</div>
 	</div>
-
+		
 	<div class="container">
 		<!-- Upload Modal -->
 		<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
@@ -116,14 +125,22 @@
 		<% include footer %>
 
 	<script>
+
 		var thumbnail_holders = "";
-		for (i = 0; i < 12; ++i) {
-			thumbnail_holders = thumbnail_holders + '<div id="thumbnail_' + i +  '" class=\'col-sm-4 col-xs-6 col-md-3 col-lg-3\'><a class="thumbnail fancybox" href="http://placehold.it/300x320.png"><img class="img-responsive" alt="" src="http://placehold.it/320x320" /></a></div>'
+		for (i = 0; i < 5; ++i) {
+			thumbnail_holders = thumbnail_holders + '<div id="thumbnail_' + i +  '" class=\'col-sm-3 col-xs-5 col-md-2 col-lg-2\'><a class="thumbnail fancybox" href="http://placehold.it/300x320.png"><img class="img-responsive" alt="" src="http://placehold.it/320x320" /></a></div>'
+		}
+
+		$('#popular').append(thumbnail_holders);
+
+		thumbnail_holders = "";
+		for (i = 5; i < 17; ++i) {
+			thumbnail_holders = thumbnail_holders + '<div id="thumbnail_' + i +  '" class=\'col-sm-3 col-xs-5 col-md-2 col-lg-2\'><a class="thumbnail fancybox" href="http://placehold.it/300x320.png"><img class="img-responsive" alt="" src="http://placehold.it/320x320" /></a></div>'
 		}
 			
 		$('#gal').append(thumbnail_holders);
 
-		for (i = 0; i < 12; ++i) {
+		for (i = 0; i < 12 + 5; ++i) {
 			var thumbnail = document.getElementById("thumbnail_" + i);
     		thumbnail.addEventListener("click", function (e) {
         		e.preventDefault();
