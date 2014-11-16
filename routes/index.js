@@ -10,6 +10,23 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
+/* GET home page. */
+router.get('/', function(req, res) {
+	res.render('index', { title: 'Home' });
+});
+
+// Process the login form
+router.post('/login', function(req, res) {
+
+	var username = req.body.username;
+	var password = req.body.password;
+
+	var getUsersStatement = 
+		'SELECT FROM USERS (USER_NAME, PASSWORD, DATE_REGISTERED) '+
+		'VALUES (\''+username+'\', \''+password+'\', SYSTIMESTAMP)';
+	var results = oracleHandler.oracleQuery(getUsersStatement);
+});
+
 /* Registration */
 router.post('/', function(req, res) {
 	var username = req.param('username');

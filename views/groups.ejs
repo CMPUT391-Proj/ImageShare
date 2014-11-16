@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include header %>
+<body>
+	<% include navbar %>
+
+	<div class="jumbotron">
+		<div class="container">
+			<h1>Groups</h1>
+			<p id="titleLeft">Share images with groups. </p>
+			<!-- Button to trigger group create -->
+			<a data-toggle="modal" href="#createGroup">
+				<button id="createGrp" type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#uploadModal" data-backdrop="static">
+					  Create a group
+				</button>
+			</a>
+	        <% include createGroup %>
+		</div>
+	</div>
+
+<div class="container">
+
+    <hgroup class="mb20">
+		<h2 class="lead">You are a member of <strong class="text-danger">3</strong> groups</h2>								
+	</hgroup>
+
+    <section class="col-xs-12 col-sm-6 col-md-12">
+		<article class="search-result row">
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<a href="#" title="Lorem ipsum" class="thumbnail"><img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/ym/r/idA1SgH-tQQ.png" alt="Lorem ipsum" /></a>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-2">
+				<ul class="meta-search">
+					<li>Created on: </li>
+					<li><i class="glyphicon glyphicon-calendar"></i> <span>02/15/2014</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>4:28 pm</span></li>
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+				<h3><a href="#" title="">Group Name Here</a></h3>
+				<p>Group description here.</p>						
+                <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+			</div>
+			<span class="clearfix borda"></span>
+		</article>
+		<ul class="list-unstyled"><li><hr></li></ul>
+
+        <article class="search-result row">
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<a href="#" title="Lorem ipsum" class="thumbnail"><img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/ym/r/idA1SgH-tQQ.png" alt="Lorem ipsum" /></a>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-2">
+				<ul class="meta-search">
+					<li><i class="glyphicon glyphicon-calendar"></i> <span>02/13/2014</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>8:32 pm</span></li>
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-7">
+				<h3><a href="#" title="">Group Name Here</a></h3>
+				<p>Group description here.</p>						
+                <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+			</div>
+			<span class="clearfix borda"></span>
+		</article>
+		<ul class="list-unstyled"><li><hr></li></ul>
+
+		<article class="search-result row">
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<a href="#" title="Lorem ipsum" class="thumbnail"><img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/ym/r/idA1SgH-tQQ.png" alt="Lorem ipsum" /></a>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-2">
+				<ul class="meta-search">
+					<li><i class="glyphicon glyphicon-calendar"></i> <span>01/11/2014</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>10:13 am</span></li>
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-7">
+				<h3><a href="#" title="">Group Name Here</a></h3>
+				<p>Group description here.</p>								
+                <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+			</div>
+			<span class="clearfix border"></span>
+		</article>
+		<ul class="list-unstyled"><li><hr></li></ul>
+
+	</section>
+</div>
+
+	<div class="container">
+		<hr>
+			<% include footer %>
+	</div>
+</body>
+</html>
+
