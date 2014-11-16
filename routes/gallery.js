@@ -33,8 +33,10 @@ router.get('/groupRetrieval', function(req, res) {
 	// get the groups the user are in only
 	var sql = "SELECT group_name, user_name from GROUPS";
 
-	var results = oracleHandler.oracleRetrieval(sql);
-	res.send(results);
+	oracleHandler.oracleRetrieval(sql, function(err, results) {
+		if (err) throw err;
+		res.send(results);
+	});
 });
 
 module.exports = router;
