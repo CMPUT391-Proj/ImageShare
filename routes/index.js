@@ -39,10 +39,11 @@ router.post('/', function(req, res) {
 
 	var user = helper.createUser([username, password, 'SYSTIMESTAMP']);
 	var person = helper.createPerson([username, firstname, lastname, address, email, phone]);
-
+	
 	oracleHandler.oracleInsert('USERS', user, function(err, results) {
 		oracleHandler.oracleInsert('PERSONS', person, function(err2, results2) {
-			// res.send(results);	// send the results if you need it
+			req.method = 'get';
+			res.redirect('/gallery'); 
 		});
 	});
 });
