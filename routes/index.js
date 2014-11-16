@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var oracleHandler = require('oracle-handler');
+var helper = require('helper/templates');
+var async = require('async');
 var router = express.Router();
 
 /* GET home page. */
@@ -9,25 +11,22 @@ router.get('/', function(req, res) {
 });
 
 /* Registration */
-router.post('/register', function(req, res) {
-	var username = req.body.username;
-	var password = req.body.password;
-	var firstname = req.body.firstname;
-	var lastname = req.body.lastname;
-	var address = req.body.address;
-	var email = req.body.email;
-	var phone = req.body.phone;
+router.post('/', function(req, res) {
+	var username = req.param('username');
+	var password = req.param('password');
+	var firstname = req.param('firstname');
+	var lastname = req.param('lastname');
+	var address = req.param('address');
+	var email = req.param('email');
+	var phone = req.param('phone');
 
-	var insertUsersStatement = 
-		'INSERT INTO USERS (USER_NAME, PASSWORD, DATE_REGISTERED) '+
-		'VALUES (\''+username+'\', \''+password+'\', SYSTIMESTAMP)';
+	var user = helper.createUser([username, password, 'SYSTIMESTAMP']);
+	var person = helper.createPerson([username, firstname, lastname, address, email, phone]);
 
-	var insertPersonsStatement =
-		'INSERT INTO PERSONS (USER_NAME, FIRST_NAME, LAST_NAME, ADDRESS, EMAIL, PHONE) '+
-		'VALUES (\''+username+'\',\''+firstname+'\',\''+lastname+'\',\''+address+'\',\''+email+'\',\''+phone+'\')';
-
-	oracleHandler.oracleQuery(insertUsersStatement);
-	oracleHandler.oracleQuery(insertPersonsStatement);
+	//needs to be synchronized
+	if(oracleHandler.oracleInsert('USERS', user)) {
+		oracleHandler.oracleInsert('PERSONS', person);
+	}
 });
 
 module.exports = router;
