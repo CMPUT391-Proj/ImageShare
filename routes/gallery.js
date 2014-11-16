@@ -16,10 +16,25 @@ router.post('/imageUpload', function(req, res) {
 	var place = req.body.place;
 
 	var insertImagesStatement = 
-		'INSERT INTO IMAGES ' +
-		'VALUES (1, \'jesstest\', 1, \'' + subject + '\', \'' + place + '\', \'' + date + '\', \'' + description + '\', null, null)';
+		'INSERT INTO IMAGES '
+			+ 'VALUES ((SELECT MAX(photo_id) from IMAGES) + 1, \'jesstest\', 1, \'' 
+			+ subject + '\', \'' + place + '\', TO_DATE(\''  
+			+ date + '\', \'yyyy-mm-dd\'), \'' + description + '\', null, null)';
 
 	oracleHandler.oracleQuery(insertImagesStatement);
+	
+	res.send('success');
+	// res.error();
+});
+
+/* Retrieves all groups the current user is in */
+router.get('/groupRetrieval', function(req, res) {
+	// need to modify later to join with group_lists to
+	// get the groups the user are in only
+	var sql = "SELECT group_name, user_name from GROUPS";
+
+	var results = oracleHandler.oracleRetrieval(sql);
+	res.send(results);
 });
 
 module.exports = router;
