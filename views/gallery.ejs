@@ -81,16 +81,18 @@
 			        	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 			        	<h3 class="modal-title" id="uploadModalLabel">Image Upload</h3>
 			      	</div>
-			    	<div class="modal-body">
-	    				<div id="imageUpload">
-	    					<% include image_upload %>
-	    				</div>
-			    	</div>
-			    	<div class="modal-footer">
-			        	<button type="button" class="btn btn-default" 
-			        	data-dismiss="modal">Close</button>
-			        	<button type="button" class="btn btn-primary">Upload</button>
-			    	</div>
+			      	<form id="imageUploadForm" action="/imageUpload" method="post">
+				    	<div class="modal-body">
+		    				<div id="imageUpload">
+		    					<% include image_upload %>
+		    				</div>
+				    	</div>
+				    	<div class="modal-footer">
+				        	<button type="button" class="btn btn-default" 
+				        	data-dismiss="modal">Close</button>
+				        	<button type="submit" class="btn btn-primary">Upload</button>
+				    	</div>
+			    	</form>
 			    </div>
 			</div>
 		</div>
@@ -124,6 +126,36 @@
 
 	<hr>
 		<% include footer %>
+
+	<script>
+		$(function() {
+			$('#imageUploadForm').on('submit', function(e) {
+				e.preventDefault();
+
+				$.ajax({
+					url: '/gallery/groupRetrieval',
+					type: 'GET',
+					success: function(data) {
+						for (i = 0; i < data.length; ++i) {
+							console.log(data[i]);
+						}
+					}
+				});
+
+				// $.ajax({
+				// 	url: '/gallery/imageUpload',
+				// 	type: 'POST',
+				// 	data: $('#imageUploadForm').serialize(),
+				// 	success: function(data) {
+				// 		$('#uploadModal').modal('hide');
+				// 	},
+				// 	error: function() {
+				// 		alert('failure');
+				// 	}
+				// });
+			});
+		})
+	</script>
 
 	<script>
 
