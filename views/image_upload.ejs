@@ -113,7 +113,7 @@
 
     function addRadioButtons(data) {
         for (i = 1; i <= data.length; ++i) {
-            var radioButton = '<label class="radio"><input name="permissionsGroup" id="radio' + i + '" value="option' + i + '" type="radio">Group: ' + data[i-1].GROUP_NAME + ' / Owner: ' + data[i-1].USER_NAME + '</label>';
+            var radioButton = '<label class="radio"><input name="permissionsGroup" id="radio' + i + '" value="' + data[i-1].GROUP_NAME + '|' + data[i-1].USER_NAME + '" type="radio">Group: ' + data[i-1].GROUP_NAME + ' / Owner: ' + data[i-1].USER_NAME + '</label>';
 
             $('#permissions').append(radioButton);
         }

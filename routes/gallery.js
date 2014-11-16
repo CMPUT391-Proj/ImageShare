@@ -11,28 +11,34 @@ router.get('/', function(req, res) {
 /* Image uploading */
 router.post('/imageUpload', function(req, res) {
 	
-	//console.log('body: ' + JSON.stringify(req.body));
-	//console.log(req.body.info);
-	//console.log(req.body.desc);
-	console.log(req.body);
-	console.log(req.body.info);
+	console.log('received JSON: ', req.body);
 
 	var description = req.body.info.desc;
 	var subject = req.body.info.subject;
 	var date = req.body.info.date;
 	var place = req.body.info.place;
 
+	var permissions = req.body.info.permissionsGroup.split("|");
+	var groupName = permissions[0];
+	var userName = permissions[1];
+
+	var selectGroupStatement =  
+		'SELECT group_id from groups where group_name=\'' 
+			+ groupName + '\'' 
+			+ (userName == 'null' ? '' : (' and user_name=\'' + userName + '\''));
+
 	var insertImagesStatement = 
 		'INSERT INTO IMAGES '
-			+ 'VALUES ((SELECT MAX(photo_id) from IMAGES) + 1, \'jesstest\', 1, \'' 
-			+ subject + '\', \'' + place + '\', TO_DATE(\''  
+			+ 'VALUES ((SELECT MAX(photo_id) from IMAGES) + 1, \'jesstest\', '
+			+ '(' + selectGroupStatement + ')'
+			+ ', \'' + subject + '\', \'' + place + '\', TO_DATE(\''  
 			+ date + '\', \'yyyy-mm-dd\'), \'' + description + '\', null, null)';
 
 	oracleHandler.oracleQuery(insertImagesStatement, function(err, result) {
 		if (err)
 			res.status(500).send(err);
 		else
-			res.send(result);
+			res.send('success');
 	});	
 });
 
