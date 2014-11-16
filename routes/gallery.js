@@ -21,10 +21,12 @@ router.post('/imageUpload', function(req, res) {
 			+ subject + '\', \'' + place + '\', TO_DATE(\''  
 			+ date + '\', \'yyyy-mm-dd\'), \'' + description + '\', null, null)';
 
-	oracleHandler.oracleQuery(insertImagesStatement);
-	
-	res.send('success');
-	// res.error();
+	oracleHandler.oracleQuery(insertImagesStatement, function(err, result) {
+		if (err)
+			res.status(500).send(err);
+		else
+			res.send(result);
+	});	
 });
 
 /* Retrieves all groups the current user is in */
