@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 });
 
 /* Registration */
-router.post('/register', function(req, res) {
+router.post('/', function(req, res) {
 	var username = req.param('username');
 	var password = req.param('password');
 	var firstname = req.param('firstname');
