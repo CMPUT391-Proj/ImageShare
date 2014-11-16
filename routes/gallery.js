@@ -10,10 +10,17 @@ router.get('/', function(req, res) {
 
 /* Image uploading */
 router.post('/imageUpload', function(req, res) {
-	var description = req.body.desc;
-	var subject = req.body.subject;
-	var date = req.body.date;
-	var place = req.body.place;
+	
+	//console.log('body: ' + JSON.stringify(req.body));
+	//console.log(req.body.info);
+	//console.log(req.body.desc);
+	console.log(req.body);
+	console.log(req.body.info);
+
+	var description = req.body.info.desc;
+	var subject = req.body.info.subject;
+	var date = req.body.info.date;
+	var place = req.body.info.place;
 
 	var insertImagesStatement = 
 		'INSERT INTO IMAGES '

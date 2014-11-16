@@ -44,7 +44,7 @@
 
     <div id="text_input">
         <div class="row">
-            <div class="input-group input-group-lg">
+            <div class="input-group">
                 <span class="input-group-addon">Description</span>
                 <input type="text" id="desc" name="desc" class="form-control" placeholder="">
             </div>
@@ -118,68 +118,5 @@
             $('#permissions').append(radioButton);
         }
     }
-</script>
-
-<script type="text/javascript">
-    /* TODO:
-          - store each image in image database
-    */
-
-    var files, 
-        file, 
-        extension, 
-        output = document.getElementById("fileOutput"),
-        dropzone = document.getElementById("fileHolder");
-
-    dropzone.addEventListener("dragover", function (e) {
-        e.preventDefault();
-        dropzone.classList.add("highlightOver");
-    });
-
-    dropzone.addEventListener("dragleave", function (e) {
-        dropzone.classList.remove("highlightOver");
-    });
-
-    dropzone.addEventListener("dragend", function (e) {
-        dropzone.classList.remove("highlightOver");
-    });
-
-    dropzone.ondrop = function(e) {
-        e.preventDefault();
-        dropzone.classList.remove("highlightOver");
-          
-        files = [];
-        output.innerHTML = "";
-
-        for (var i = 0, len = e.dataTransfer.items.length; i < len; i++) {
-            var entry = e.dataTransfer.items[i].webkitGetAsEntry();
-            readDir(entry, files);
-        }
-    };
-
-    function readDir(entry, files) {
-        if (entry.isFile) {
-            readFile(entry, files);
-        } else if (entry.isDirectory) {
-            var dirReader = entry.createReader();
-            dirReader.readEntries(function(entries) {
-                for (var i = 0; i < entries.length; ++i) {
-                  readDir(entries[i], files);
-                } 
-            });
-        }
-    }
-
-    function readFile(file, files) {    // file type FileEntry
-        console.log(file.size);
-        extension = file.name.split(".").pop();
-        if (extension == 'jpg' || extension == 'gif') {
-            files.push(file);
-            output.innerHTML += "<li class='type-" + extension + "'>" + file.fullPath + "</li>";
-        }        
-    }
-
-
-
 </script>
 

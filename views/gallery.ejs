@@ -128,14 +128,94 @@
 		<% include footer %>
 
 	<script>
+	    var files = [];
+
+	    var output = document.getElementById("fileOutput"),
+	        dropzone = document.getElementById("fileHolder");
+
+	    dropzone.addEventListener("dragover", function (e) {
+	        e.preventDefault();
+	        dropzone.classList.add("highlightOver");
+	    });
+
+	    dropzone.addEventListener("dragleave", function (e) {
+	        dropzone.classList.remove("highlightOver");
+	    });
+
+	    dropzone.addEventListener("dragend", function (e) {
+	        dropzone.classList.remove("highlightOver");
+	    });
+
+	    dropzone.ondrop = function(e) {
+	        files = [];
+
+	        e.preventDefault();
+	        dropzone.classList.remove("highlightOver");
+	          
+	        output.innerHTML = "";
+
+	        for (var i = 0, len = e.dataTransfer.items.length; i < len; i++) {
+	            var entry = e.dataTransfer.items[i].webkitGetAsEntry();
+	            readDir(entry);
+	        }
+	    };
+
+	    function readDir(entry) {
+	        if (entry.isFile) {
+	            readFile(entry);
+	        } else if (entry.isDirectory) {
+	            var dirReader = entry.createReader();
+	            dirReader.readEntries(function(entries) {
+	                for (var i = 0; i < entries.length; ++i) {
+	                  readDir(entries[i]);
+	                } 
+	            });
+	        }
+	    }
+
+	    function readFile(file) {
+	        var extension = file.name.split(".").pop();
+	        if (extension == 'jpg' || extension == 'JPG'
+	            || extension == 'gif' || extension == 'GIF') {
+	            file.file(function(f) {
+	                var blob = f.slice();
+	                files.push(blob);
+	                output.innerHTML += "<li class='type-" + extension + "'>" + file.fullPath + "</li>";
+	            });
+	        }        
+	    }	
+
+		$.fn.serializeFormJSON = function() {
+
+		   var o = {};
+		   var a = this.serializeArray();
+		   $.each(a, function() {
+		       if (o[this.name]) {
+		           if (!o[this.name].push) {
+		               o[this.name] = [o[this.name]];
+		           }
+		           o[this.name].push(this.value || '');
+		       } else {
+		           o[this.name] = this.value || '';
+		       }
+		   });
+		   return o;
+		};
+
 		$(function() {
 			$('#imageUploadForm').on('submit', function(e) {
 				e.preventDefault();
 
+				var data = {};
+				data.info = $('#imageUploadForm').serializeFormJSON();
+				data.photos = files;
+
 				$.ajax({
 					url: '/gallery/imageUpload',
 					type: 'POST',
-					data: $('#imageUploadForm').serialize(),
+					data: JSON.stringify(data),
+					dataType: 'json',
+					contentType: 'application/json',
 					success: function(data) {
 						$('#uploadModal').modal('hide');
 					},
@@ -148,7 +228,6 @@
 	</script>
 
 	<script>
-
 		var thumbnail_holders = "";
 		for (i = 0; i < 5; ++i) {
 			thumbnail_holders = thumbnail_holders + '<div id="thumbnail_' + i +  '" class=\'col-sm-3 col-xs-5 col-md-2 col-lg-2\'><a class="thumbnail fancybox" href="http://placehold.it/300x320.png"><img class="img-responsive" alt="" src="http://placehold.it/320x320" /></a></div>'
