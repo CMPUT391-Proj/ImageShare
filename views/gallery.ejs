@@ -133,26 +133,16 @@
 				e.preventDefault();
 
 				$.ajax({
-					url: '/gallery/groupRetrieval',
-					type: 'GET',
+					url: '/gallery/imageUpload',
+					type: 'POST',
+					data: $('#imageUploadForm').serialize(),
 					success: function(data) {
-						for (i = 0; i < data.length; ++i) {
-							console.log(data[i]);
-						}
+						$('#uploadModal').modal('hide');
+					},
+					error: function() {
+						alert('failure');
 					}
 				});
-
-				// $.ajax({
-				// 	url: '/gallery/imageUpload',
-				// 	type: 'POST',
-				// 	data: $('#imageUploadForm').serialize(),
-				// 	success: function(data) {
-				// 		$('#uploadModal').modal('hide');
-				// 	},
-				// 	error: function() {
-				// 		alert('failure');
-				// 	}
-				// });
 			});
 		})
 	</script>

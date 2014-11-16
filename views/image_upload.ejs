@@ -29,6 +29,9 @@
     label.control-label span { 
       cursor: pointer; 
     }
+    .radio {
+        font-weight: normal;   
+    }
   .date-picker{z-index:1151 !important;}
 </style>
 
@@ -76,6 +79,10 @@
             </div>   
         </div>
 
+        <div id="permissions" class="row">
+            <h4>Permissions</h4>
+        </div>
+
         <div class="row">
             <h4>Files to upload:</h4>
             <ul id="fileOutput"></ul>
@@ -92,6 +99,25 @@
         var val = $("label[for='" + id + "']").text();
         $("#msg").text(val + " changed");
     });
+</script>
+
+<script>
+    // Retrieve all groups
+    $.ajax({
+        url: '/gallery/groupRetrieval',
+        type: 'GET',
+        success: function(data) {
+            addRadioButtons(data);
+        }
+    });    
+
+    function addRadioButtons(data) {
+        for (i = 1; i <= data.length; ++i) {
+            var radioButton = '<label class="radio"><input name="permissionsGroup" id="radio' + i + '" value="option' + i + '" type="radio">Group: ' + data[i-1].GROUP_NAME + ' / Owner: ' + data[i-1].USER_NAME + '</label>';
+
+            $('#permissions').append(radioButton);
+        }
+    }
 </script>
 
 <script type="text/javascript">
