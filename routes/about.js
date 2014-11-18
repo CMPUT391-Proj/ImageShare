@@ -3,7 +3,20 @@ var router = express.Router();
 
 /* GET about page. */
 router.get('/', function(req, res) {
-	res.render('about', { title: 'About' });
+	if (req.signedCookies.username == undefined)
+	{
+		res.render('about', { title: 'About',
+							 username: 'You Are Currently Not Signed In',
+							 navbarToggle: ''}
+		);
+	}
+	else
+	{
+		res.render('about', { title: 'About',
+							  username: req.signedCookies.username,
+							  navbarToggle: 'dropdown'}
+		);
+	}
 });
 
 module.exports = router;
