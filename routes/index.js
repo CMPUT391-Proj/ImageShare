@@ -7,12 +7,20 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
-
-/* GET home page. */
-router.get('/', function(req, res) {
-	res.render('index', { title: 'Home' });
+	if (req.signedCookies.username == undefined)
+	{
+		res.render('index', { title: 'Home',
+							 username: 'You Are Currently Not Signed In',
+							 navbarToggle: ''}
+		);
+	}
+	else
+	{
+		res.render('index', { title: 'Home',
+							  username: req.signedCookies.username,
+							  navbarToggle: 'dropdown'}
+		);
+	}
 });
 
 // Process the login form
@@ -24,28 +32,30 @@ router.post('/login', function(req, res) {
 	var getUsersStatement = 
 		'SELECT FROM USERS (USER_NAME, PASSWORD, DATE_REGISTERED) '+
 		'VALUES (\''+username+'\', \''+password+'\', SYSTIMESTAMP)';
-	var results = oracleHandler.oracleQuery(getUsersStatement);
-});
 
-/* Registration */
-router.post('/', function(req, res) {
-	var username = req.param('username');
-	var password = req.param('password');
-	var firstname = req.param('firstname');
-	var lastname = req.param('lastname');
-	var address = req.param('address');
-	var email = req.param('email');
-	var phone = req.param('phone');
+/*	oracleHandler.oracleRetrieval(getUsersStatement) {
+		if (user && user.authenticate(req.body.user.password)) {
+			req.session.user_name = user.id;
 
-	var user = helper.createUser([username, password, 'SYSTIMESTAMP']);
-	var person = helper.createPerson([username, firstname, lastname, address, email, phone]);
-	
-	oracleHandler.oracleInsert('USERS', user, function(err, results) {
-		oracleHandler.oracleInsert('PERSONS', person, function(err2, results2) {
-			req.method = 'get';
-			res.redirect('/gallery'); 
-		});
-	});
+	      // Remember me
+	      //if (req.body.remember_me) {
+	      	var loginToken = new LoginToken({ email: user.email });
+	      	loginToken.save(function() {
+	      		res.cookie('logintoken', loginToken.cookieValue, { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
+	      	});
+	      //}
+
+	      res.redirect('/gallery');
+		}
+		else {
+			req.flash('error', 'Incorrect credentials');
+			res.redirect('/');
+		}
+
+	});*/
+	res.cookie('username', username, { maxAge: 900000, httpOnly: true, signed: true});
+	console.log('username cookie created successfully');
+	res.redirect('/gallery');
 });
 
 module.exports = router;

@@ -5,7 +5,9 @@ var router = express.Router();
 
 /* GET gallery page. */
 router.get('/', function(req, res) {
-  res.render('gallery', { title: 'Gallery' });
+  	res.render('gallery', { title: 'Gallery',
+  							  username: req.signedCookies.username,
+							  navbarToggle: 'dropdown'});
 });
 
 /* Image uploading */
