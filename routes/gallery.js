@@ -27,19 +27,23 @@ router.post('/imageUpload', function(req, res) {
 			+ groupName + '\'' 
 			+ (userName == 'null' ? '' : (' and user_name=\'' + userName + '\''));
 
-	var insertImagesStatement = 
-		'INSERT INTO IMAGES '
-			+ 'VALUES ((SELECT MAX(photo_id) from IMAGES) + 1, \'jesstest\', '
-			+ '(' + selectGroupStatement + ')'
-			+ ', \'' + subject + '\', \'' + place + '\', TO_DATE(\''  
-			+ date + '\', \'yyyy-mm-dd\'), \'' + description + '\', null, null)';
+	var photos = req.body.photos;
+	for (i = 0; i < photos.length; ++i) {
+		photos[i] = (photos[i] + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 
-	oracleHandler.oracleQuery(insertImagesStatement, function(err, result) {
-		if (err)
-			res.status(500).send(err);
-		else
-			res.send(result);
-	});	
+		var insertImagesStatement = 
+			'INSERT INTO IMAGES '
+				+ 'VALUES ((SELECT MAX(photo_id) from IMAGES) + 1, \'jesstest\', '
+				+ '(' + selectGroupStatement + ')'
+				+ ', \'' + subject + '\', \'' + place + '\', TO_DATE(\''  
+				+ date + '\', \'yyyy-mm-dd\'), \'' + description + '\', null, '
+				+ '\'' + photos[i] + '\')';
+
+		oracleHandler.oracleQuery(insertImagesStatement, function(err, result) {
+			if (err) res.status(500).send(err);
+			if (i == photos.length - 1) res.send(result);
+		});	
+	}
 });
 
 /* Retrieves all groups the current user is in */

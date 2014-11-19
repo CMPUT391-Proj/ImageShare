@@ -180,8 +180,17 @@
 	        if (extension == 'jpg' || extension == 'JPG'
 	            || extension == 'gif' || extension == 'GIF') {
 	            file.file(function(f) {
-	                var blob = f.slice();
-	                files.push(blob);
+
+	                var reader = new FileReader();
+
+	                reader.onloadend = function() {
+	                	var binary = reader.result;
+	        			console.log('image binary: ', binary);
+	        			files.push(binary);
+	                }
+
+	                reader.readAsBinaryString(f);
+
 	                output.innerHTML += "<li class='type-" + extension + "'>" + file.fullPath + "</li>";
 	            });
 	        }        
